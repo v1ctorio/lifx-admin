@@ -168,8 +168,8 @@ client.on("interactionCreate", async (interaction) => {
         };
         }
     );
-    const focused = interaction.options.getFocused()
-    const filtered = options.filter((option) => option.name.startsWith(focused));
+    const focused = interaction.options.getFocused().toLowerCase();
+    const filtered = options.filter((option) => option.name.toLowerCase().startsWith(focused));
 
     interaction.respond(filtered)
 
