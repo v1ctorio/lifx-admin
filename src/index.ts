@@ -125,6 +125,39 @@ client.on("interactionCreate", async (interaction) => {
         });
       }
     }
+    if (interaction.commandName === "toogle") {
+        const lightId = interaction.options.get("name")?.value;
+        const selector = `id:${lightId}`;
+        //TODO: manage other people lights
+        const token = await loadToken(interaction.user.id);
+        if (!token) {
+            interaction.reply({
+                content: "You have not logged in yet! </login:1125341801193156708>",
+                ephemeral: true,
+            });
+            return;
+        }
+        const state = await toogleLight(token, selector);
+        if (state === 'invalid_token') {
+            interaction.reply({
+                content: "Your token is invalid! </login:1125341801193156708>",
+                ephemeral: true,
+            });
+            return;
+        }
+        if (state === 'off') {
+            interaction.reply({
+                content: `The light ${lightId} is now off!`,
+            });
+            return;
+        }
+        if (state === 'on') {
+            interaction.reply({
+                content: `The light ${lightId} is now on!`,
+            });
+            return;
+        }
+    }
   }
   if (interaction.isButton()) {
     if (interaction.customId === "login") {
@@ -283,6 +316,19 @@ async function getLights(owner: String) {
   return lights?.data;
 }
 //@TODO
-async function toogleLight(token: String, selector: String) {}
+async function toogleLight(token: String, selector: String): Promise<'on' | 'off' | 'invalid_token'> {
+    const req = await fetch(`https://api.lifx.com/v1/lights/${selector}/toggle`, {
+        method: 'POST',
+        headers: {
+            accept: 'application/json',
+            authorization: `Bearer ${token}`,
+        },
+    });
+    if (req.status === 401) {
+        return 'invalid_token';
+    }
+    return (await req.json()).results[0].power;
+
+}
 client.login(DISCORD_TOKEN);
 await redisClient.connect();
