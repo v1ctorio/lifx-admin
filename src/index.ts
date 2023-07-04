@@ -5,6 +5,8 @@ import { createClient } from "redis";
 config();
 
 const { DISCORD_TOKEN } = process.env;
+const LIGHTS_DATA = new Map();
+
 
 const client = new Discord.Client({
   intents: ["Guilds"],
@@ -150,21 +152,12 @@ async function manageAccess(userId:String, targetId: String, action: 'add' | 're
 }
 
 async function listLights(ownerId: String, isRaw: boolean = false) {
-    const token = await loadToken(ownerId);
-    if (!token) return false;
-    console.log(token);
 
-    const req = await fetch('https://api.lifx.com/v1/lights/all', {
-        headers: {
-            accept: 'application/json',
-            authorization: `Bearer ${token}`,
-        },
-    })
-    //if error 401, token is invalid
-    if (req.status === 401) {
-        return 'invalid lifx token';
-    }
-    const res = await req.json();
+    const res = await getLights(ownerId)
+    console.log(res);
+
+    if(!res) return `Owner is not logged in! </login:1125341801193156708>`
+    if(res === 'invalid_token') return `Invalid token! </login:1125341801193156708>`
     if (isRaw) {
         const rawJSON = "```json\n"+(JSON.stringify(res))+"```"
         if (rawJSON.length > 2000) {
@@ -177,6 +170,53 @@ async function listLights(ownerId: String, isRaw: boolean = false) {
     }
     ).join('\n - ');
     return lightsList;
+}
+
+async function refreshCache(owner:String) {
+    const token = await loadToken(owner);
+    if (!token) return false;
+    const req = await fetch('https://api.lifx.com/v1/lights/all', {
+        headers: {
+            accept: 'application/json',
+            authorization: `Bearer ${token}`,
+        },
+    })
+    if (req.status === 401) {
+        return 'invalid_token';
+    }
+    LIGHTS_DATA.set(owner, {
+        refreshedAt: Date.now(),
+        data: await req.json(),
+    });
+}   
+async function getLights(owner:String) {
+    const token = await loadToken(owner);
+    if (!token) return false;
+    let lights = LIGHTS_DATA.get(owner);
+
+    if (!lights||lights.refreshedAt + 300000 < Date.now()) {
+
+        const req = await fetch('https://api.lifx.com/v1/lights/all', {
+            headers: {
+                accept: 'application/json',
+                authorization: `Bearer ${token}`,
+            },
+        })
+
+        
+        if (req.status === 401) {
+            return 'invalid_token';
+        }
+
+        const JSON_req = await req.json(); 
+        LIGHTS_DATA.set(owner, {
+            refreshedAt: Date.now(),
+            data: JSON_req,
+        });
+        lights = LIGHTS_DATA.get(owner);
+    }
+    return lights.data;
+
 }
 //@TODO
 async function toogleLight(token: String, selector: String) {
