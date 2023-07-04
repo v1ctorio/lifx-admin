@@ -20,6 +20,7 @@ redisClient.on("error", (error) => {
 client.on("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
 });
+client.on("unhandledRejection", (error) => { console.error(error); });
 
 client.on("messageCreate", (message) => {
   if (message.content === "!ping") {
