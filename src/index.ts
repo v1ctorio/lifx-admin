@@ -1,11 +1,12 @@
 import Discord from "discord.js";
 import { config } from "dotenv";
 import { createClient } from "redis";
+import { light } from "./types";
 
 config();
 
 const { DISCORD_TOKEN } = process.env;
-const LIGHTS_DATA = new Map();
+const LIGHTS_DATA: Map<String, {refreshedAt:number,data:light[]}> = new Map();
 
 const client = new Discord.Client({
   intents: ["Guilds"],
@@ -157,6 +158,25 @@ client.on("interactionCreate", async (interaction) => {
       });
     }
   }
+  if (interaction.isAutocomplete()){
+    const lights = await getLights(interaction.user.id);
+    if (lights && lights !== 'invalid_token') {
+    const options = lights.map((light) => {
+        return {
+            name: light.label,
+            value: light.id,
+        };
+        }
+    );
+    const focused = interaction.options.getFocused()
+    const filtered = options.filter((option) => option.name.startsWith(focused));
+
+    interaction.respond(filtered)
+
+
+    }
+
+  }
 });
 
 async function updateToken(userId: String, token: String) {
@@ -260,7 +280,7 @@ async function getLights(owner: String) {
     });
     lights = LIGHTS_DATA.get(owner);
   }
-  return lights.data;
+  return lights?.data;
 }
 //@TODO
 async function toogleLight(token: String, selector: String) {}
