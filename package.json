@@ -2,7 +2,7 @@
   "name": "lifx-adm",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "repository": "https://github.com/Nosesisaid/lifx-adm.git",
+  "repository": "https://github.com/v1ctorio/lifx-admin.git",
   "author": "Vic <74506415+v1ctorio@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
