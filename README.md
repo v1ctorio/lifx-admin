@@ -8,10 +8,10 @@ Discord bot to manage lifix's products
 - [x] List all lights
 - [x] Give/revoke other users access to lights
 - [x] Toogle light's power
-- [] Change light's color	
-- [] Change light's color
+- [ ] Change light's color	
+- [ ] Change light's color
 - [x] Autofill light's name
-- [] Control other user lights
+- [ ] Control other user lights
 
 
 ### Login 
