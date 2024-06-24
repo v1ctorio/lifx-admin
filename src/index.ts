@@ -126,7 +126,7 @@ client.on("interactionCreate", async (interaction) => {
         });
       }
     }
-    if (interaction.isCommand() && interaction.commandName === "color") { 
+    if (interaction.commandName === "color") { 
       const selector = 'id:'+interaction.options.get("selector")?.value;
       
       const color = interaction?.options?.get("color")?.value as basicColors;
@@ -156,6 +156,41 @@ client.on("interactionCreate", async (interaction) => {
      if (state === 'ok') {
         interaction.reply({
             content: `The light ${selector} is now ${color}!`,
+        });
+        return;
+     }
+      
+    }
+    if (interaction.commandName === "brightness") { 
+      const selector = 'id:'+interaction.options.get("selector")?.value;
+      
+      const brightness = interaction?.options?.get("brightness")?.value as number;
+      if (isNaN(brightness)) {
+        interaction.reply({
+          content: "Invalid brightness! It must be a number between 0 and 100",
+          ephemeral: true,
+        });
+        return;
+      }
+      const token = await loadToken(interaction.user.id);
+      if (!token) {
+        interaction.reply({
+          content: "You have not logged in yet! </login:1125341801193156708>",
+          ephemeral: true,
+        });
+        return;
+      }
+      const state = await dimLight(token, selector, brightness);
+      if (state === 'invalid_token') {
+        interaction.reply({
+            content: "Your token is invalid! </login:1125341801193156708>",
+            ephemeral: true,
+        });
+        return;
+      }
+     if (state === 'ok') {
+        interaction.reply({
+            content: `The light ${selector} is now set to  ${brightness}%!`,
         });
         return;
      }
@@ -388,6 +423,33 @@ async function changeColor(token:String, selector: String, color:basicColors) {
   const r = await req.json();
   console.log(r);
   return r.results[0].status; // 'ok'
+}
+async function dimLight(token: String, selector: String, b: number) {
+  console.log({b, selector, token});
+  const brightness = b/100;
+  if (brightness < 0 || brightness > 1) {
+    return 'Invalid_brightness';
+  }
+  const req = await fetch(`https://api.lifx.com/v1/lights/${selector}/state`, {
+    method: 'PUT',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      power: 'on',
+      brightness: brightness,
+    }),
+  })
+  if (req.status === 401) {
+    return 'invalid_token';
+  }
+  const r = await req.json();
+  console.log(r);
+  return r.results[0].status; // 'ok'
+  
+  //TODO
 }
 
 
