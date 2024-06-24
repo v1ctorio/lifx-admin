@@ -8,9 +8,14 @@ Discord bot to manage lifix's products
 - [x] List all lights
 - [x] Give/revoke other users access to lights
 - [x] Toogle light's power
-- [ ] Change light's color	
-- [ ] Change light's color
 - [x] Autofill light's name
+- [x] Change light's color	
+- [x] Change light's brightness
+- [ ] Add other selectors like groups or all to commands
+- [ ] Refactor everything so I don't have to repeat code
+- [ ] Add tests
+- [ ] Modularize the code
+- [ ] Set all the messages more organized in a file or something so it could even posible to localize 
 - [ ] Control other user lights
 
 
