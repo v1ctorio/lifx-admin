@@ -4,7 +4,7 @@ export interface light {
     label: string
     connected: boolean
     power: string
-    color: Color
+    color: ColorL
     brightness: number
     effect: string
     group: Group
@@ -14,7 +14,7 @@ export interface light {
     seconds_since_seen: number
   }
   
-  export interface Color {
+  export interface ColorL {
     hue: number
     saturation: number
     kelvin: number
@@ -50,4 +50,4 @@ export interface light {
     min_kelvin: number
     max_kelvin: number
   }
-  
+export type basicColors = 'white' |'red'| 'orange' | 'yellow' | 'cyan' | 'green' | 'blue' | 'purple' | 'pink'

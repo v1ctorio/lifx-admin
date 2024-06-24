@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import { config } from "dotenv";
 import { createClient } from "redis";
-import { light } from "./types";
+import { ColorL, basicColors, light } from "./types";
 
 config();
 
@@ -125,6 +125,41 @@ client.on("interactionCreate", async (interaction) => {
           } access to ${target}!`,
         });
       }
+    }
+    if (interaction.isCommand() && interaction.commandName === "color") { 
+      const selector = 'id:'+interaction.options.get("selector")?.value;
+      
+      const color = interaction?.options?.get("color")?.value as basicColors;
+      if (!isColor(color)) {
+        interaction.reply({
+          content: "Invalid color!",
+          ephemeral: true,
+        });
+        return;
+      }
+      const token = await loadToken(interaction.user.id);
+      if (!token) {
+        interaction.reply({
+          content: "You have not logged in yet! </login:1125341801193156708>",
+          ephemeral: true,
+        });
+        return;
+      }
+      const state = await changeColor(token, selector, color);
+      if (state === 'invalid_token') {
+        interaction.reply({
+            content: "Your token is invalid! </login:1125341801193156708>",
+            ephemeral: true,
+        });
+        return;
+      }
+     if (state === 'ok') {
+        interaction.reply({
+            content: `The light ${selector} is now ${color}!`,
+        });
+        return;
+     }
+      
     }
     if (interaction.commandName === "toogle") {
         const lightId = interaction.options.get("name")?.value;
@@ -318,6 +353,8 @@ async function getLights(owner: String) {
 }
 //@TODO
 async function toogleLight(token: String, selector: String): Promise<'on' | 'off' | 'invalid_token'> {
+  console.log({selector, token});
+
     const req = await fetch(`https://api.lifx.com/v1/lights/${selector}/toggle`, {
         method: 'POST',
         headers: {
@@ -331,5 +368,35 @@ async function toogleLight(token: String, selector: String): Promise<'on' | 'off
     return (await req.json()).results[0].power;
 
 }
+async function changeColor(token:String, selector: String, color:basicColors) {
+  console.log({color, selector, token});
+  const req = await fetch(`https://api.lifx.com/v1/lights/${selector}/state`, {
+    method: 'PUT',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      power: 'on',
+      color: color,
+    }),
+  })
+  if (req.status === 401) {
+    return 'invalid_token';
+  }
+  const r = await req.json();
+  console.log(r);
+  return r.results[0].status; // 'ok'
+}
+
+
+
+function isColor (color: string): color is basicColors {
+  const aviableC = ['white', 'red', 'orange', 'yellow', 'cyan', 'green', 'blue', 'purple', 'pink']
+  console.log(color);
+  return aviableC.includes(color);
+}
+
 client.login(DISCORD_TOKEN);
 await redisClient.connect();
