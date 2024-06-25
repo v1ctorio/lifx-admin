@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { DatabaseClient } from "../../db/redis";
-import { notRegistered } from "../../util/NotRegistered";
-import { APIClient as LifxAPIClient } from "../../api/APIClient";
-async function listLights(CInteraction: ChatInputCommandInteraction, redis: DatabaseClient, lifx: LifxAPIClient) {
+import { DatabaseClient } from "../../db/redis.js";
+import { notRegistered } from "../../util/NotRegistered.js";
+import { LIFXAPIClient as LifxAPIClient } from "../../api/APIClient";
+export async function listLights(CInteraction: ChatInputCommandInteraction, redis: DatabaseClient, lifx: LifxAPIClient) {
     const targetId = CInteraction.options.getUser('owner')?.id || CInteraction.user.id;
     const owner = await redis.ownerManager.loadOwner(targetId);
 

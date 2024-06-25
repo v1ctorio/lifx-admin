@@ -1,11 +1,12 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, CommandInteraction, ComponentType, DiscordAPIError, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { updateLanguageServiceSourceFile } from "typescript";
+import { DatabaseClient } from "../db/redis.js";
 
-async function register(commandI: ChatInputCommandInteraction) {
+export default async function register(commandI: ChatInputCommandInteraction, redis: DatabaseClient) {
     const loginEmbed = new EmbedBuilder()
         .setTitle("Log in with LIFX")
         .setDescription(
-            `In order to login into lifix, you'll need to give your lifx cloud token.`
+            `In order to login with LIFX, you'll need to give your lifx cloud token. This token has the capacity to control your lights and retrieve information about them. NO private information.`
         )
         .setColor("#450098")
         .addFields([
@@ -47,23 +48,9 @@ async function register(commandI: ChatInputCommandInteraction) {
     });
     const Bcollector = response.createMessageComponentCollector({
         componentType: ComponentType.Button,
-        time: 60000,
+        time: 120000,
         filter: (interaction) => interaction.customId === "login" && interaction.user.id === commandI.user.id,
-        onError: (error) => {
-            if (error instanceof DiscordAPIError) {
-                console.error(error);
-            }
-        },
-        onTimeout: () => {
-            commandI.editReply({
-                content: "You took too long to click the button. Please try again.",
-                components: []
-            });
-        },
-        onCollect: async (interaction) => {
-            await interaction.deferUpdate();
-            await interaction.followUp("Please paste your token here.");
-        }
+        
     });
     Bcollector.on("end", collected => {
         if (collected.size === 0) {
@@ -75,7 +62,7 @@ async function register(commandI: ChatInputCommandInteraction) {
     });
     Bcollector.on("collect", async (interaction: ButtonInteraction) => {
         const loginmodal = new ModalBuilder()
-        .setTitle("Login into lifx")
+        .setTitle("Login with lifx")
         .setCustomId("lifxloginmodal");
 
       const TokenInput = new TextInputBuilder()
@@ -95,14 +82,18 @@ async function register(commandI: ChatInputCommandInteraction) {
       interaction.awaitModalSubmit({time:60000})
       .then(async (modal) => {
         const token = modal.fields.getTextInputValue("tokenInput");
-        updateToken(token, interaction.user.id); //TODO with db
+        redis.ownerManager.registerOwner(interaction.user.id,token); //TODO with db
         interaction.editReply({
             content: "Registered into LIFX bot successfully",
             components: []});
+        modal.reply({
+            content: modal.user.username +" you have been registered into LIFX bot successfully",
+            ephemeral: true
+        });
         })
         .catch((error) => {
             console.error(error);
-            interaction.editReply({
+            commandI.editReply({
                 content: "You took too long to paste the token. Please try again.",
                 components: []
             });

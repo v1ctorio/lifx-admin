@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { light } from "../types/lifx";
+import { light } from "../types/lifx.js";
 import { lightOwner } from "../types/internal";
 
-export class APIClient {
+export class LIFXAPIClient {
 
     private client: AxiosInstance;
 

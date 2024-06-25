@@ -1,6 +1,6 @@
 import { RedisClientType } from "redis";
 import { lightOwner } from "../types/internal";
-import { OwnerManager } from "./manageOwner";
+import { OwnerManager } from "./manageOwner.js";
 
 export class DatabaseClient {
     private client: RedisClientType;
@@ -10,6 +10,6 @@ export class DatabaseClient {
         this.ownerManager = new OwnerManager(client);
     }
     public async retriveToken(owner:lightOwner) {
-        return await this.ownerManager.loadOwner(owner.id, this.client)
+        return await this.ownerManager.loadOwner(owner.id)
     }
 }
