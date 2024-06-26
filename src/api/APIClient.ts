@@ -19,20 +19,17 @@ export class LIFXAPIClient {
   }
 
   public async listLights(owner: lightOwner): Promise<light[]|`error`> {
-    this.client.get(`lights/all`, {
+    try {
+    const res = await this.client.get(`lights/all`, {
         headers: {
             Authorization: `Bearer ${owner.token}`
         }
     })
-    .catch((err) => {
+    return  (res as AxiosResponse).data as light[]
+    } catch (err) {
         console.error(err)
         return `error`
-    })
-    .then((res) => {
-        return  (res as AxiosResponse).data as light[]
-    })
-
-    return Promise.resolve(`error`)
-
+    }
+    
   }
 }

@@ -4,7 +4,9 @@ import loadDB from './db/loaddb.js';
 import { DatabaseClient } from './db/redis.js';
 import { RedisClientType } from 'redis';
 import { LIFXAPIClient } from './api/APIClient.js';
-import register from './commands/register.js';
+import register from './discord/register.js';
+import { handleAutocomplete } from './discord/handleAutocomplete.js';
+import { listLights } from './discord/slash/lights.js';
 
 config();
 
@@ -21,10 +23,15 @@ DClient.on('interactionCreate', async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
         if (interaction.commandName === 'list') {
-            await interaction.reply('Pong!');
+            await listLights(interaction, RClient, LClient);
         }
         if (interaction.commandName === 'login') {
             await register(interaction, RClient);
+        }
+    }
+    if (interaction.isAutocomplete()) {
+        if (/*check if it's selector autocomplete*/true) {
+            handleAutocomplete(interaction, RClient, LClient)
         }
     }
  });
