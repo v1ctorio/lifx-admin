@@ -6,7 +6,8 @@ import { RedisClientType } from 'redis';
 import { LIFXAPIClient } from './api/APIClient.js';
 import register from './discord/register.js';
 import { handleAutocomplete } from './discord/handleAutocomplete.js';
-import { listLights } from './discord/slash/lights.js';
+import { listLightsCommand } from './discord/slash/lights.js';
+import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
 
 config();
 
@@ -23,10 +24,13 @@ DClient.on('interactionCreate', async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
         if (interaction.commandName === 'list') {
-            await listLights(interaction, RClient, LClient);
+            await listLightsCommand(interaction, RClient, LClient);
         }
         if (interaction.commandName === 'login') {
             await register(interaction, RClient);
+        }
+        if (interaction.commandName === 'toggle') {
+             await toggleCommand(interaction, RClient, LClient);
         }
     }
     if (interaction.isAutocomplete()) {

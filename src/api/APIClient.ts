@@ -32,4 +32,18 @@ export class LIFXAPIClient {
     }
     
   }
+  public async toggleLight(owner: lightOwner, selector: string): Promise<`error`|`success`> {
+    try {
+      const res = await this.client.post(`lights/${selector}/toggle`,{}, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+    } catch (err) {
+      console.error(err)
+      return "error"
+    }
+
+  } 
 }

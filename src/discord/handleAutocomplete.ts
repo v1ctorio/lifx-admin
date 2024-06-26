@@ -18,7 +18,7 @@ export async function handleAutocomplete(AInteraction: AutocompleteInteraction, 
     lights.map((light) => {
         selectors.push( {
             name: light.label,
-            value: light.id,
+            value: 'id:'+light.id,
         });
         }
     )
