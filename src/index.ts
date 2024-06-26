@@ -8,6 +8,7 @@ import register from './discord/register.js';
 import { handleAutocomplete } from './discord/handleAutocomplete.js';
 import { listLightsCommand } from './discord/slash/lights.js';
 import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
+import { dimCommand } from './discord/slash/dim.js';
 
 config();
 
@@ -27,10 +28,13 @@ DClient.on('interactionCreate', async (interaction) => {
             await listLightsCommand(interaction, RClient, LClient);
         }
         if (interaction.commandName === 'login') {
-            await register(interaction, RClient);
+            await register(interaction, RClient, LClient);
         }
         if (interaction.commandName === 'toggle') {
              await toggleCommand(interaction, RClient, LClient);
+        }
+        if (interaction.commandName === 'dim') {
+            await dimCommand(interaction, RClient, LClient);
         }
     }
     if (interaction.isAutocomplete()) {

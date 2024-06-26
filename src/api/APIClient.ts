@@ -58,5 +58,21 @@ export class LIFXAPIClient {
       return "error"
     }
 
-  } 
+  }
+  public async dimLight(owner:lightOwner,selector:string,brightness:number) {
+    try {
+      const res = await this.client.post(`lights/${selector}/state`,{
+        "power": "on",
+        "brightness": brightness
+      }, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+  } catch (err) {
+    console.error(err)
+    return "error"
+  }
+}
 }

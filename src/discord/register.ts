@@ -1,8 +1,9 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ChatInputCommandInteraction, CommandInteraction, ComponentType, DiscordAPIError, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { updateLanguageServiceSourceFile } from "typescript";
 import { DatabaseClient } from "../db/redis.js";
+import { LIFXAPIClient } from "../api/APIClient.js";
 
-export default async function register(commandI: ChatInputCommandInteraction, redis: DatabaseClient) {
+export default async function register(commandI: ChatInputCommandInteraction, redis: DatabaseClient, LIFX: LIFXAPIClient) {
     const loginEmbed = new EmbedBuilder()
         .setTitle("Log in with LIFX")
         .setDescription(
@@ -84,11 +85,23 @@ export default async function register(commandI: ChatInputCommandInteraction, re
         const token = modal.fields.getTextInputValue("tokenInput");
         redis.ownerManager.registerOwner(interaction.user.id,token); //TODO with db
         interaction.editReply({
-            content: "Registered into LIFX bot successfully",
+            content: "Validating your token and creating a cache of your lights...",
             components: []});
-        modal.reply({
-            content: modal.user.username +" you have been registered into LIFX bot successfully",
-            ephemeral: true
+        modal.deferReply({
+            ephemeral: false
+        });
+        const valid = await LIFX.validateToken(token);
+        if (!valid) {
+            modal.editReply({
+                content: "Invalid token. Please try again.",
+                components: []
+            });
+            return;
+        }
+        //TODO CREATE A CACHE OF LIGHTS AVIABLE ATM
+        modal.editReply({
+            content: "Token validated!",
+            components: []
         });
         })
         .catch((error) => {
