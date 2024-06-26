@@ -11,13 +11,13 @@ export async function listLightsCommand(CInteraction: ChatInputCommandInteractio
         return;
     }
 
-    const lights = await lifx.listLights(owner);
-    if (lights.length === 0) {
-        CInteraction.reply(`No lights found on your account!`);
+    const lights = await redis.retriveLights(owner, lifx);
+    if (!lights) {
+        CInteraction.reply(`An error occured while fetching your lights! Probably your token is invalid!`);
         return;
     }
-    if (lights === `error`) {
-        CInteraction.reply(`An error occured while fetching your lights! Probably your token is invalid!`);
+    if (lights.length === 0) {
+        CInteraction.reply(`No lights found on your account!`);
         return;
     }
 

@@ -11,8 +11,8 @@ export async function handleAutocomplete(AInteraction: AutocompleteInteraction, 
         return;
     }
     console.log({owner})
-    const lights = await lifx.listLights(owner);
-    if (typeof lights === 'string') return;
+    const lights = await redis.retriveLights(owner,lifx);
+    if (!lights) return;
     const selectors = [{name:'all',value:'all'}]
 
     console.log({lights})
