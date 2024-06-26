@@ -18,6 +18,19 @@ export class LIFXAPIClient {
     });
   }
 
+  public async validateToken(token: string): Promise<boolean> {
+    try {
+      const res = await this.client.get(`lights/all`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      })
+      return true
+    } catch (err) {
+      console.error(err)
+      return false
+    }
+  }
   public async listLights(owner: lightOwner): Promise<light[]|`error`> {
     try {
     const res = await this.client.get(`lights/all`, {
