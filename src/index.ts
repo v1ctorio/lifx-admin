@@ -4,7 +4,7 @@ import loadDB from './db/loaddb.js';
 import { DatabaseClient } from './db/redis.js';
 import { RedisClientType } from 'redis';
 import { LIFXAPIClient } from './api/APIClient.js';
-import register from './discord/register.js';
+import link from './discord/link.js';
 import { handleAutocomplete } from './discord/handleAutocomplete.js';
 import { listLightsCommand } from './discord/slash/lights.js';
 import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
@@ -27,8 +27,8 @@ DClient.on('interactionCreate', async (interaction) => {
         if (interaction.commandName === 'list') {
             await listLightsCommand(interaction, RClient, LClient);
         }
-        if (interaction.commandName === 'login') {
-            await register(interaction, RClient, LClient);
+        if (interaction.commandName === 'linklifx') {
+            await link(interaction, RClient, LClient);
         }
         if (interaction.commandName === 'toggle') {
              await toggleCommand(interaction, RClient, LClient);

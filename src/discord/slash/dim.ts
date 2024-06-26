@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { DatabaseClient } from "../../db/redis";
 import { LIFXAPIClient } from "../../api/APIClient";
-import { notRegistered } from "../../util/NotRegistered.js";
+import { handleNotLinked } from "../../util/NotLinked.js";
 
 export async function dimCommand(CInteraction: ChatInputCommandInteraction, redis: DatabaseClient, lifx: LIFXAPIClient) {
     const targetId = CInteraction.options.getUser('owner')?.id || CInteraction.user.id;
@@ -16,7 +16,7 @@ export async function dimCommand(CInteraction: ChatInputCommandInteraction, redi
     }
 
     if (owner === `not_registered`) {
-        notRegistered(CInteraction);
+        handleNotLinked(CInteraction);
         console.log(`not registered`,owner)
         return;
     }

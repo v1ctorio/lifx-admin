@@ -3,11 +3,11 @@ import { updateLanguageServiceSourceFile } from "typescript";
 import { DatabaseClient } from "../db/redis.js";
 import { LIFXAPIClient } from "../api/APIClient.js";
 
-export default async function register(commandI: ChatInputCommandInteraction, redis: DatabaseClient, LIFX: LIFXAPIClient) {
+export default async function link(commandI: ChatInputCommandInteraction, redis: DatabaseClient, LIFX: LIFXAPIClient) {
     const loginEmbed = new EmbedBuilder()
-        .setTitle("Log in with LIFX")
+        .setTitle("Link LIFX account")
         .setDescription(
-            `In order to login with LIFX, you'll need to give your lifx cloud token. This token has the capacity to control your lights and retrieve information about them. NO private information.`
+            `In order to link your LIFX account, you'll need to give your lifx cloud token. This token has the capacity to control your lights and retrieve information about them. NO private information.`
         )
         .setColor("#450098")
         .addFields([
@@ -19,7 +19,7 @@ export default async function register(commandI: ChatInputCommandInteraction, re
             {
                 name: "How to use the token?",
                 value:
-                    'Click on the button "login" below and paste your token into the modal.',
+                    'Click on the button "link" below and paste your token into the modal.',
             },
         ]);
 
@@ -27,7 +27,7 @@ export default async function register(commandI: ChatInputCommandInteraction, re
         .addComponents(
             new ButtonBuilder()
                 .setCustomId("login")
-                .setLabel("Login")
+                .setLabel("link")
                 .setStyle(ButtonStyle.Primary)
         )
         .addComponents(
@@ -63,7 +63,7 @@ export default async function register(commandI: ChatInputCommandInteraction, re
     });
     Bcollector.on("collect", async (interaction: ButtonInteraction) => {
         const loginmodal = new ModalBuilder()
-        .setTitle("Login with lifx")
+        .setTitle("Link lifx account")
         .setCustomId("lifxloginmodal");
 
       const TokenInput = new TextInputBuilder()

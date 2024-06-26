@@ -1,14 +1,14 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { DatabaseClient } from "../../db/redis";
 import { LIFXAPIClient } from "../../api/APIClient";
-import { notRegistered } from "../../util/NotRegistered.js";
+import { handleNotLinked } from "../../util/NotLinked.js";
 
 export async function toogleCommand(CInteraction: ChatInputCommandInteraction, redis: DatabaseClient, lifx: LIFXAPIClient) {
     const targetId = CInteraction.options.getUser('owner')?.id || CInteraction.user.id;
     const owner = await redis.ownerManager.loadOwner(targetId);
 
     if (owner === `not_registered`) {
-        notRegistered(CInteraction);
+        handleNotLinked(CInteraction);
         console.log(`not registered`,owner)
         return;
     }
