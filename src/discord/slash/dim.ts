@@ -26,10 +26,10 @@ export async function dimCommand(CInteraction: ChatInputCommandInteraction, redi
 
     console.log({result,targetSelector})
     if (result === `error`) {
-        CInteraction.reply(`An error occured while toggling your light!`);
+        CInteraction.reply(`An error occured while dimming your light(s)!`);
         return;
     } else {
-        CInteraction.reply(`Light successfully toggled!`);
+        CInteraction.reply(`Light(s) successfully dimmed to ${b}%!`);
         return;
     }
 }
