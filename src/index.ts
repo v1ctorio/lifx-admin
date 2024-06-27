@@ -5,11 +5,13 @@ import { DatabaseClient } from './db/redis.js';
 import { RedisClientType } from 'redis';
 import { LIFXAPIClient } from './api/APIClient.js';
 import link from './discord/link.js';
-import { handleAutocomplete } from './discord/handleAutocomplete.js';
+import { handleSelectorAutocomplete } from './discord/handleAutocomplete.js';
 import { listLightsCommand } from './discord/slash/lights.js';
 import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
 import { dimCommand } from './discord/slash/dim.js';
 import { colorCommand } from './discord/slash/color.js';
+import { listScenesCommand } from './discord/slash/scenes/list.js';
+import { handleSceneAutocomplete } from './discord/handleScenesAutocomplete.js';
 
 config();
 
@@ -40,10 +42,22 @@ DClient.on('interactionCreate', async (interaction) => {
         if (interaction.commandName === 'color') {
             await colorCommand(interaction, RClient, LClient);
         }
+
+        if (interaction.commandName === 'scenes') {
+            const subcommand = interaction.options.getSubcommand(true);
+            if (subcommand === 'list') {
+                 await listScenesCommand(interaction, RClient, LClient);
+            }
+        }
     }
     if (interaction.isAutocomplete()) {
-        if (/*check if it's selector autocomplete*/true) {
-            handleAutocomplete(interaction, RClient, LClient)
+        const opt = interaction.options.getFocused(true).name;
+        console.log({opt})
+        if (opt == 'selector') { 
+            handleSelectorAutocomplete(interaction, RClient, LClient)
+        }
+        if (opt == 'scene') {
+            handleSceneAutocomplete(interaction, RClient, LClient)
         }
     }
  });

@@ -51,3 +51,21 @@ export interface light {
     max_kelvin: number
   }
 export type basicColors = 'white' |'red'| 'orange' | 'yellow' | 'cyan' | 'green' | 'blue' | 'purple' | 'pink'
+export interface scene {
+  uuid: string;
+  name: string;
+  account: Account;
+  states: State[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Account {
+  uuid: string;
+}
+
+export interface State {
+  brightness: number;
+  selector: string;
+  
+}

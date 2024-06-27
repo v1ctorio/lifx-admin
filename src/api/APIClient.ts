@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { light } from "../types/lifx.js";
+import { light, scene } from "../types/lifx.js";
 import { lightOwner } from "../types/internal";
 
 export class LIFXAPIClient {
@@ -45,6 +45,21 @@ export class LIFXAPIClient {
     }
     
   }
+  public async listScenes(owner: lightOwner): Promise<scene[]|`error`> {
+    try {
+    const res = await this.client.get(`scenes`, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+    })
+    return  (res as AxiosResponse).data as scene[]
+    }
+    catch (err) {
+        console.error(err)
+        return `error`
+    }
+  }
+
   public async toggleLight(owner: lightOwner, selector: string): Promise<`error`|`success`> {
     try {
       const res = await this.client.post(`lights/${selector}/toggle`,{}, {

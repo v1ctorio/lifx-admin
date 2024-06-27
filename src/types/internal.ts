@@ -5,3 +5,7 @@ export interface lightOwner {
     id: string
     token: string
 }
+export interface discordAPIAutocompleteResponse {
+    name: string
+    value: string
+}
