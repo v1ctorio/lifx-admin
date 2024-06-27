@@ -75,5 +75,22 @@ export class LIFXAPIClient {
     console.error(err)
     return "error"
   }
+  }
+  public async colorLight(owner:lightOwner,selector:string,color:string) {
+    try {
+      const res = await this.client.put(`lights/${selector}/state`,{
+        "power": "on",
+        "color": color
+      }, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      
+      return "success"
+  } catch (err) {
+    console.error(err)
+    return "error"
+  }
 }
 }

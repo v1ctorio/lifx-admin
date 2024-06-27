@@ -9,6 +9,7 @@ import { handleAutocomplete } from './discord/handleAutocomplete.js';
 import { listLightsCommand } from './discord/slash/lights.js';
 import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
 import { dimCommand } from './discord/slash/dim.js';
+import { colorCommand } from './discord/slash/color.js';
 
 config();
 
@@ -35,6 +36,9 @@ DClient.on('interactionCreate', async (interaction) => {
         }
         if (interaction.commandName === 'dim') {
             await dimCommand(interaction, RClient, LClient);
+        }
+        if (interaction.commandName === 'color') {
+            await colorCommand(interaction, RClient, LClient);
         }
     }
     if (interaction.isAutocomplete()) {
