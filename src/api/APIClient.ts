@@ -108,4 +108,19 @@ export class LIFXAPIClient {
     return "error"
   }
 }
+
+  public async activateScene(owner:lightOwner,sceneID:string) { 
+    try {
+      const res = await this.client.put(`scenes/scene_id:${sceneID}/activate`,{}, {
+        headers: {
+
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+  } catch (err) {
+    console.error(err)
+    return "error"
+  }
+}
 }

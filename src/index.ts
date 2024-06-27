@@ -12,6 +12,7 @@ import { dimCommand } from './discord/slash/dim.js';
 import { colorCommand } from './discord/slash/color.js';
 import { listScenesCommand } from './discord/slash/scenes/list.js';
 import { handleSceneAutocomplete } from './discord/handleScenesAutocomplete.js';
+import { activateSceneCommand } from './discord/slash/scenes/activate.js';
 
 config();
 
@@ -47,6 +48,9 @@ DClient.on('interactionCreate', async (interaction) => {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'list') {
                  await listScenesCommand(interaction, RClient, LClient);
+            }
+            if (subcommand === 'activate') {
+                await activateSceneCommand(interaction, RClient, LClient);
             }
         }
     }
