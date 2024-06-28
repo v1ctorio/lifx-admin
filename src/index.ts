@@ -62,9 +62,7 @@ DClient.on('interactionCreate', async (interaction) => {
             }
         }
         if (interaction.commandName === 'refresh') {
-            await refreshCommand(interaction, RClient, LClient);
-            interaction.reply(`Lights cache successfully refreshed!`);
-        
+            await refreshCommand(interaction, RClient, LClient);        
         }
     }
     if (interaction.isAutocomplete()) {
