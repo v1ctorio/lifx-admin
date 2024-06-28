@@ -137,4 +137,18 @@ export class LIFXAPIClient {
       return "error"
     }
   }
+
+  public async offEffects(owner:lightOwner){
+    try {
+      const res = await this.client.post(`effects/off`,{}, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+    } catch (err) {
+      console.error(err)
+      return "error"
+    }
+  }
 }

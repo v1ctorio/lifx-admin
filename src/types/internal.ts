@@ -9,3 +9,4 @@ export interface discordAPIAutocompleteResponse {
     name: string
     value: string
 }
+type effect = 'breathe' | 'move' | 'morph' | 'flame' | 'pulse' | 'off'

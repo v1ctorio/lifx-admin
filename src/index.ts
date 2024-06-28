@@ -15,6 +15,7 @@ import { handleSceneAutocomplete } from './discord/handleScenesAutocomplete.js';
 import { activateSceneCommand } from './discord/slash/scenes/activate.js';
 import { lightStateCommand } from './discord/slash/lights/state.js';
 import { refreshCommand } from './discord/slash/refresh.js';
+import { effectOffCommand } from './discord/slash/effect/off.js';
 
 config();
 
@@ -63,6 +64,13 @@ DClient.on('interactionCreate', async (interaction) => {
         }
         if (interaction.commandName === 'refresh') {
             await refreshCommand(interaction, RClient, LClient);        
+        }
+
+        if (interaction.commandName === 'effects') {
+            const subcommand = interaction.options.getSubcommand(true);
+            if (subcommand === 'off') {
+                await effectOffCommand(interaction, RClient, LClient);
+            }
         }
     }
     if (interaction.isAutocomplete()) {
