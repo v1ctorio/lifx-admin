@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { handleNotLinked } from "../../util/NotLinked";
+import { handleNotLinked } from "../../util/NotLinked.js";
 import { DatabaseClient } from "../../db/redis";
 import { LIFXAPIClient } from "../../api/APIClient";
 

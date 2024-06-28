@@ -14,6 +14,7 @@ import { listScenesCommand } from './discord/slash/scenes/list.js';
 import { handleSceneAutocomplete } from './discord/handleScenesAutocomplete.js';
 import { activateSceneCommand } from './discord/slash/scenes/activate.js';
 import { lightStateCommand } from './discord/slash/lights/state.js';
+import { refreshCommand } from './discord/slash/refresh.js';
 
 config();
 
@@ -59,6 +60,11 @@ DClient.on('interactionCreate', async (interaction) => {
             if (subcommand === 'activate') {
                 await activateSceneCommand(interaction, RClient, LClient);
             }
+        }
+        if (interaction.commandName === 'refresh') {
+            await refreshCommand(interaction, RClient, LClient);
+            interaction.reply(`Lights cache successfully refreshed!`);
+        
         }
     }
     if (interaction.isAutocomplete()) {
