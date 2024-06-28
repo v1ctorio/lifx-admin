@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { light, scene } from "../types/lifx.js";
+import { light, lightState, scene } from "../types/lifx.js";
 import { lightOwner } from "../types/internal";
 
 export class LIFXAPIClient {
@@ -57,6 +57,20 @@ export class LIFXAPIClient {
     catch (err) {
         console.error(err)
         return `error`
+    }
+  }
+
+  public async setLightState(owner: lightOwner, selector: string, state: lightState): Promise<`error`|`success`> {
+    try {
+      const res = await this.client.put(`lights/${selector}/state`, state, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+    } catch (err) {
+      console.error(err)
+      return "error"
     }
   }
 
@@ -118,9 +132,9 @@ export class LIFXAPIClient {
         }
       })
       return "success"
-  } catch (err) {
-    console.error(err)
-    return "error"
+    } catch (err) {
+      console.error(err)
+      return "error"
+    }
   }
-}
 }

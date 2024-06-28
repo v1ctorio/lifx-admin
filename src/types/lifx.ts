@@ -66,6 +66,13 @@ export interface Account {
 
 export interface State {
   brightness: number;
-  selector: string;
-  
+  selector: string; 
+}
+
+export interface lightState {
+  power?: 'on' | 'off' ;
+  color?: string;
+  brightness?: number;
+  duration?: number;
+  infrared?: number;
 }

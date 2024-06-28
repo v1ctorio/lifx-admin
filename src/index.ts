@@ -6,13 +6,14 @@ import { RedisClientType } from 'redis';
 import { LIFXAPIClient } from './api/APIClient.js';
 import link from './discord/link.js';
 import { handleSelectorAutocomplete } from './discord/handleAutocomplete.js';
-import { listLightsCommand } from './discord/slash/lights.js';
+import { listLightsCommand } from './discord/slash/lights/list.js';
 import { toogleCommand as toggleCommand } from './discord/slash/toogle.js';
 import { dimCommand } from './discord/slash/dim.js';
 import { colorCommand } from './discord/slash/color.js';
 import { listScenesCommand } from './discord/slash/scenes/list.js';
 import { handleSceneAutocomplete } from './discord/handleScenesAutocomplete.js';
 import { activateSceneCommand } from './discord/slash/scenes/activate.js';
+import { lightStateCommand } from './discord/slash/lights/state.js';
 
 config();
 
@@ -28,8 +29,14 @@ DClient.on('ready', () => {
 DClient.on('interactionCreate', async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
-        if (interaction.commandName === 'list') {
-            await listLightsCommand(interaction, RClient, LClient);
+        if (interaction.commandName === 'lights') {
+            const subcommand = interaction.options.getSubcommand(true);
+            if (subcommand === 'list') {
+                await listLightsCommand(interaction, RClient, LClient);
+            }
+            if (subcommand === 'state') {
+                await lightStateCommand(interaction, RClient, LClient);
+            }
         }
         if (interaction.commandName === 'linklifx') {
             await link(interaction, RClient, LClient);

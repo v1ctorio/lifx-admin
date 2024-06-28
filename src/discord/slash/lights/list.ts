@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { DatabaseClient } from "../../db/redis.js";
-import { handleNotLinked } from "../../util/NotLinked.js";
-import { LIFXAPIClient as LifxAPIClient } from "../../api/APIClient.js";
+import { DatabaseClient } from "../../../db/redis.js";
+import { handleNotLinked } from "../../../util/NotLinked.js";
+import { LIFXAPIClient as LifxAPIClient } from "../../../api/APIClient.js";
 export async function listLightsCommand(CInteraction: ChatInputCommandInteraction, redis: DatabaseClient, lifx: LifxAPIClient) {
     const targetId = CInteraction.options.getUser('owner')?.id || CInteraction.user.id;
     const owner = await redis.ownerManager.loadOwner(targetId);
