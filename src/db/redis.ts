@@ -14,7 +14,7 @@ export class DatabaseClient {
     public async retriveToken(owner:lightOwner) {
         return await this.ownerManager.loadOwner(owner.id)
     }
-    public async retriveLights(owner:lightOwner, LIFX: LIFXAPIClient): Promise<light[]|undefined> {
+    public async retriveLights(owner:lightOwner, LIFX: LIFXAPIClient,force?: boolean): Promise<light[]|undefined> {
         console.log({owner})
         const maxCacheTime = 60 * 60 * 60; // 1 hour
         const now = Date.now();
@@ -34,7 +34,7 @@ export class DatabaseClient {
             const updatedAgo = await this.client.get(owner.id+`._lights.updated`) as string;
             console.log('Retrived lights from redis as they were in cache')
             
-            if (now - parseInt(updatedAgo) > maxCacheTime) {
+            if (now - parseInt(updatedAgo) > maxCacheTime || force) {
                 const li = await LIFX.listLights(owner);
                 if ((li as unknown as string) == 'error') return undefined;
                 lights = li as light[];
