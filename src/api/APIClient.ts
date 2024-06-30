@@ -140,7 +140,7 @@ export class LIFXAPIClient {
 
   public async offEffects(owner:lightOwner){
     try {
-      const res = await this.client.post(`effects/off`,{}, {
+      const res = await this.client.post(`/lights/all/effects/off`,{}, {
         headers: {
             Authorization: `Bearer ${owner.token}`
         }

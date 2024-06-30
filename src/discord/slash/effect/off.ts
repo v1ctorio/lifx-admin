@@ -13,5 +13,13 @@ export async function effectOffCommand(CInteraction: ChatInputCommandInteraction
         return;
     }
 
-    const result = await redis.retriveLights(owner, lifx);
+    const result = await lifx.offEffects(owner);
+
+    if(result === 'error') {
+        CInteraction.reply(`An error occured while fetching your lights!`);
+        return;
+    } 
+        CInteraction.reply(`Effects successfully turned off!`);
+        
+    
 }

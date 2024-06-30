@@ -66,7 +66,7 @@ DClient.on('interactionCreate', async (interaction) => {
             await refreshCommand(interaction, RClient, LClient);        
         }
 
-        if (interaction.commandName === 'effects') {
+        if (interaction.commandName === 'effect') {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'off') {
                 await effectOffCommand(interaction, RClient, LClient);
