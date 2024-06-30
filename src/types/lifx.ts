@@ -76,3 +76,12 @@ export interface lightState {
   duration?: number;
   infrared?: number;
 }
+
+export interface pulseEffectOptions {
+  color?: string;
+  from_color?: string;
+  period?: number;
+  cycles?: number;
+  persist?: boolean;
+  power_on?: boolean;
+}

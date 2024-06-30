@@ -16,6 +16,7 @@ import { activateSceneCommand } from './discord/slash/scenes/activate.js';
 import { lightStateCommand } from './discord/slash/lights/state.js';
 import { refreshCommand } from './discord/slash/refresh.js';
 import { effectOffCommand } from './discord/slash/effect/off.js';
+import { PulseEffectCommand } from './discord/slash/effect/pulse.js';
 
 config();
 
@@ -70,6 +71,9 @@ DClient.on('interactionCreate', async (interaction) => {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'off') {
                 await effectOffCommand(interaction, RClient, LClient);
+            }
+            if (subcommand === 'pulse') {
+                await PulseEffectCommand(interaction, RClient, LClient);
             }
         }
     }
