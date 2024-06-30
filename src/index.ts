@@ -18,6 +18,7 @@ import { refreshCommand } from './discord/slash/refresh.js';
 import { effectOffCommand } from './discord/slash/effect/off.js';
 import { PulseEffectCommand } from './discord/slash/effect/pulse.js';
 import { FlameEffectCommand } from './discord/slash/effect/flame.js';
+import { moveEffectCommand } from './discord/slash/effect/move.js';
 
 config();
 
@@ -78,6 +79,9 @@ DClient.on('interactionCreate', async (interaction) => {
             }
             if (subcommand === 'flame') {
                  await FlameEffectCommand(interaction, RClient, LClient);
+            }
+            if (subcommand === 'move') {
+                await moveEffectCommand(interaction, RClient, LClient);
             }
         }
     }

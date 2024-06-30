@@ -91,3 +91,12 @@ export interface flameEffectOptions {
   duration?: number;
   power_on?: boolean;
 }
+
+export type Direction = 'forward' | 'backward'
+
+export interface moveEffectOptions {
+  direction?: Direction;
+  period?: number;
+  cycles?: number;
+  power_on?: boolean;
+}
