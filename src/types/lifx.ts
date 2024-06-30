@@ -85,3 +85,9 @@ export interface pulseEffectOptions {
   persist?: boolean;
   power_on?: boolean;
 }
+
+export interface flameEffectOptions {
+  period?: number;
+  duration?: number;
+  power_on?: boolean;
+}

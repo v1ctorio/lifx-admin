@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { light, lightState, pulseEffectOptions, scene } from "../types/lifx.js";
+import { flameEffectOptions, light, lightState, pulseEffectOptions, scene } from "../types/lifx.js";
 import { lightOwner } from "../types/internal";
 
 export class LIFXAPIClient {
@@ -155,6 +155,20 @@ export class LIFXAPIClient {
   public async pulseEffect(owner:lightOwner,selector:string,effectOptions: pulseEffectOptions){
     try {
       const res = await this.client.post(`/lights/${selector}/effects/pulse`,effectOptions, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+    } catch (err) {
+      console.error(err)
+      return "error"
+    }
+  }
+
+  public async flameEffect(owner:lightOwner,selector:string, effectOptions:flameEffectOptions){
+    try {
+      const res = await this.client.post(`/lights/${selector}/effects/flame`,effectOptions, {
         headers: {
             Authorization: `Bearer ${owner.token}`
         }
