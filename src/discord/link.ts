@@ -87,9 +87,9 @@ export default async function link(commandI: ChatInputCommandInteraction, redis:
         interaction.editReply({
             content: "Validating your token and creating a cache of your lights...",
             components: []});
-        modal.deferReply({
+        /*modal.deferReply({
             ephemeral: false
-        });
+        });*/
         const valid = await LIFX.validateToken(token);
         if (!valid) {
             modal.editReply({
