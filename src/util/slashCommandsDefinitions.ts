@@ -108,11 +108,14 @@ const commands = [
                 .addStringOption(selectorOption)
                 .addStringOption(colorOption)
                 .addIntegerOption(durationOption)
-                .addBooleanOption(
-                    new SlashCommandBooleanOption()
+                .addStringOption(
+                    new SlashCommandStringOption()
                         .setName("power")
                         .setDescription("Whether to turn the light on or off.")
-                         
+                        .setChoices(
+                            {name:'on',value:'on'},
+                            {name:'off',value:'off'}
+                        )
                 )
                 .addIntegerOption(brightnessOption)
                 .addIntegerOption(
