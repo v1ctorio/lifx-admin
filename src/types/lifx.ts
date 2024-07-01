@@ -100,3 +100,13 @@ export interface moveEffectOptions {
   cycles?: number;
   power_on?: boolean;
 }
+
+export interface breatheEffectOptions {
+  color?: string;
+  from_color?: string;
+  period?: number;
+  cycles?: number;
+  persist?: boolean;
+  power_on?: boolean;
+  peak?: number;
+}

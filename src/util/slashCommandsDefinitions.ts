@@ -56,6 +56,10 @@ const color_fromOption = new SlashCommandStringOption()
     basicColors.forEach((color) => {
         color_fromOption.addChoices({name:color,value:color})
     })
+const persistOption = new SlashCommandBooleanOption()
+    .setName("persist")
+    .setDescription("If true, leave the last effect color.")
+
 
 const commands = [
     new SlashCommandBuilder()
@@ -148,9 +152,7 @@ const commands = [
                 .addIntegerOption(periodOption)
                 .addIntegerOption(cyclesOption)
                 .addBooleanOption(
-                    new SlashCommandBooleanOption()
-                        .setName("persist")
-                        .setDescription("If true, leave the last effect color.")
+                    persistOption
                 )
         )
         .addSubcommand(
@@ -177,6 +179,24 @@ const commands = [
                 )
                 .addIntegerOption(periodOption)
                 .addIntegerOption(cyclesOption)
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("breathe")
+                .setDescription("Performs a breathe effect by slowly fading between the given colors.")
+                .addStringOption(selectorOption)
+                .addStringOption(colorOption)
+                .addStringOption(color_fromOption)
+                .addIntegerOption(periodOption)
+                .addIntegerOption(cyclesOption)
+                .addBooleanOption(persistOption)
+                .addIntegerOption(
+                    new SlashCommandIntegerOption()
+                        .setName("peak")
+                        .setDescription("Defines where in a period the target color is at its maximum.")
+                        .setMinValue(0)
+                        .setMaxValue(100)
+                )
         )
 
         
