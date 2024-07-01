@@ -18,7 +18,7 @@ Discord bot to manage lifix's products
 - [ ] Feature that allows to create a message that allows you to control your light throught buttons on a message
 
 ### Login 
-![login flow](assets/loginflow.mp4)
+![login flow](assets/loginflow_compressed.mp4)
 
 ### Toggle light's power
 ![Toggle light's power](assets/toogle%20light%20lifxbot.gif)
