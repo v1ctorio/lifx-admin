@@ -20,6 +20,7 @@ import { PulseEffectCommand } from './discord/slash/effect/pulse.js';
 import { FlameEffectCommand } from './discord/slash/effect/flame.js';
 import { moveEffectCommand } from './discord/slash/effect/move.js';
 import { BreatheEfffectCommand } from './discord/slash/effect/breathe.js';
+import { MorphEffectCommand } from './discord/slash/effect/morph.js';
 
 config();
 
@@ -86,6 +87,9 @@ DClient.on('interactionCreate', async (interaction) => {
             }
             if (subcommand == 'breathe') {
                 await BreatheEfffectCommand(interaction, RClient, LClient);            
+            }
+            if (subcommand == 'morph') {
+                await MorphEffectCommand(interaction, RClient, LClient);            
             }
         }
     }

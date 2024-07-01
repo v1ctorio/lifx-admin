@@ -201,6 +201,38 @@ const commands = [
                         .setMaxValue(100)
                 )
         )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("morph")
+                .setDescription("Performs a morph effect on the tiles in your selector.")
+                .addIntegerOption(periodOption)
+                .addIntegerOption(durationOption)
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("pallete1")
+                        .setDescription("Colors to morph along.")
+                )
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("pallete2")
+                        .setDescription("Colors to morph along.")
+                )
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("pallete3")
+                        .setDescription("Colors to morph along.")
+                )
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("pallete4")
+                        .setDescription("Colors to morph along.")
+                )
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("pallete5")
+                        .setDescription("Colors to morph along.")
+                )
+        )
 
         
 ];

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { breatheEffectOptions, flameEffectOptions, light, lightState, moveEffectOptions, pulseEffectOptions, scene } from "../types/lifx.js";
+import { breatheEffectOptions, flameEffectOptions, light, lightState, morphEffectOptions, moveEffectOptions, pulseEffectOptions, scene } from "../types/lifx.js";
 import { lightOwner } from "../types/internal";
 
 export class LIFXAPIClient {
@@ -207,4 +207,18 @@ export class LIFXAPIClient {
       return "error"
     }
   }
+  public async morphEffect(owner:lightOwner,selector:string,effectOptions: morphEffectOptions) {
+    try {
+      const res = await this.client.post(`/lights/${selector}/effects/morph`,effectOptions, {
+        headers: {
+            Authorization: `Bearer ${owner.token}`
+        }
+      })
+      return "success"
+    } catch (err) {
+      console.error(err)
+      return "error"
+    }
+  }
+
 }

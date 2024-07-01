@@ -110,3 +110,10 @@ export interface breatheEffectOptions {
   power_on?: boolean;
   peak?: number;
 }
+
+export interface morphEffectOptions {
+  duration?: number;
+  period?: number;
+  palette?: string[];
+  power_on?: boolean;
+}
