@@ -11,8 +11,8 @@ export async function handleSceneAutocomplete(AInteraction: AutocompleteInteract
         return;
     }
     console.log({owner})
-    const s = await lifx.listScenes(owner);
-    if (!s || s == 'error') return;
+    const s = await redis.retriveScenes(owner,lifx);
+    if (!s) return;
     const scenes:discordAPIAutocompleteResponse[] = []
 
     console.log({scenes: s})

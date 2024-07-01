@@ -13,14 +13,15 @@ export async function refreshCommand(CInteraction: ChatInputCommandInteraction, 
         return;
     }
 
-    const result = await redis.retriveLights(owner, lifx);
+    const lights = await redis.retriveLights(owner, lifx,true);
+    const scenes = await redis.retriveScenes(owner, lifx,true);
 
-    console.log({result})
-    if (!result)  {
-        CInteraction.reply(`An error occured while refreshing your lights!`);
+    console.log({lights,scenes})
+    if (!lights || !scenes)  {
+        CInteraction.reply(`An error occured while refreshing your lights or scenes!`);
         return;
     } else {
-        CInteraction.reply(`Lights cache successfully refreshed!`);
+        CInteraction.reply(`Cache successfully refreshed!`);
         return;
     }
 }

@@ -11,8 +11,8 @@ export async function listScenesCommand(CInteraction: ChatInputCommandInteractio
         return;
     }
 
-    const scene = await lifx.listScenes(owner);
-    if (!scene || scene === `error`) {
+    const scene = await redis.retriveScenes(owner, lifx);
+    if (!scene ) {
         CInteraction.reply(`An error occured while fetching your scenes! Probably your token is invalid!`);
         return;
     }
