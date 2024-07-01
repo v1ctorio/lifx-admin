@@ -10,6 +10,7 @@ export async function BreatheEfffectCommand(CInteraction: ChatInputCommandIntera
         console.log(`not registered`,owner)
         return;
     }
+    const selector = CInteraction.options.getString('selector') || 'all';
      
     const color = CInteraction.options.getString('color') ;
     if (!color) {
@@ -30,7 +31,7 @@ export async function BreatheEfffectCommand(CInteraction: ChatInputCommandIntera
     if(pea) peak = pea/100;
 
 
-    const result = await lifx.breatheEffect(owner, 'all', {color, from_color,period,cycles,persist,peak,power_on: true});
+    const result = await lifx.breatheEffect(owner, selector, {color, from_color,period,cycles,persist,peak,power_on: true});
 
     if(result === 'error') {
         CInteraction.reply(`An error occured while activating the effect!`);
