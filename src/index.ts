@@ -21,6 +21,7 @@ import { FlameEffectCommand } from './discord/slash/effect/flame.js';
 import { moveEffectCommand } from './discord/slash/effect/move.js';
 import { BreatheEfffectCommand } from './discord/slash/effect/breathe.js';
 import { MorphEffectCommand } from './discord/slash/effect/morph.js';
+import { AboutCommand } from './discord/slash/about.js';
 
 config();
 
@@ -36,6 +37,9 @@ DClient.on('ready', () => {
 DClient.on('interactionCreate', async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
+        if (interaction.commandName === 'lifx') {
+            AboutCommand(interaction);
+        }
         if (interaction.commandName === 'light') {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'list') {

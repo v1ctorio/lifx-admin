@@ -232,6 +232,14 @@ const commands = [
                         .setName("pallete5")
                         .setDescription("Colors to morph along.")
                 )
+        ),
+        new SlashCommandBuilder()
+        .setName("lifx")
+        .setDescription("Information about LIFX bot.")
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("about")
+                .setDescription("Information about the bot.")
         )
 
         
