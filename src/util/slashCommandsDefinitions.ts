@@ -1,10 +1,14 @@
-const { REST, Routes } = require('discord.js');
+import { REST, Routes } from 'discord.js';
 import { config } from 'dotenv';
 
 import { SlashCommandBuilder,SlashCommandStringOption,SlashCommandIntegerOption, SlashCommandSubcommandBuilder, SlashCommandBooleanOption} from '@discordjs/builders';
 const basicColors = ['white','red','orange','yellow','cyan','green','blue','purple','pink'];
 
 config();
+const {CLIENT_ID, DISCORD_TOKEN } = process.env;
+if (!CLIENT_ID || !DISCORD_TOKEN) {
+    throw new Error("Missing environment variables, set up your .env!");
+}
 
 const cmds = [];
 
@@ -46,6 +50,12 @@ const cyclesOption = new SlashCommandIntegerOption()
     
 
   
+const color_fromOption = new SlashCommandStringOption()
+    .setName("from_color")
+    .setDescription('The color to start the effect from.')
+    basicColors.forEach((color) => {
+        color_fromOption.addChoices({name:color,value:color})
+    })
 
 const commands = [
     new SlashCommandBuilder()
@@ -57,13 +67,8 @@ const commands = [
         .setDescription("Refresh the cache of your LIFX account. Use it if you have recently added or removed devices.")
         ,
     new SlashCommandBuilder()
-        .setName("/linklifx")
+        .setName("linklifx")
         .setDescription("Link your discord account to your LIFX account."),
-    new SlashCommandBuilder()
-        .setName("color")
-        .setDescription("Change the color of a selector.")
-        .addStringOption(selectorOption)
-        .addStringOption(colorOption),
     new SlashCommandBuilder()
         .setName("scene")
         .setDescription("Manage the scenes from the authenticated account.")
@@ -139,7 +144,7 @@ const commands = [
                 .setDescription("Performs a pulse effect by quickly flashing between the given colors.")
                 .addStringOption(selectorOption)
                 .addStringOption(colorOption)
-                .addStringOption(colorOption.setName("from_color").setDescription('The color to start the effect from.'))
+                .addStringOption(color_fromOption)
                 .addIntegerOption(periodOption)
                 .addIntegerOption(cyclesOption)
                 .addBooleanOption(
@@ -159,7 +164,7 @@ const commands = [
         .addSubcommand(
             new SlashCommandSubcommandBuilder()
                 .setName("move")
-                .setDescription("Performs a move effect on a linear device with zones, by moving the current pattern across the device.")
+                .setDescription("Performs a move effect on a linear device with zones.")
                 .addStringOption(selectorOption)
                 .addStringOption(
                     new SlashCommandStringOption()
@@ -173,7 +178,7 @@ const commands = [
                 .addIntegerOption(periodOption)
                 .addIntegerOption(cyclesOption)
         )
-        
+
         
 ];
 
@@ -188,15 +193,15 @@ for (const command of commands) {
 
 
 
-const rest = new REST().setToken(process.env.DISCORD_TOKEN);
+const rest = new REST().setToken(DISCORD_TOKEN);
 try {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-    // The put method is used to fully refresh all commands in the guild with the current set
+    // The put method is used to fully refresh all commands 
     const data = await rest.put(
-        Routes.applicationCommands(process.env.clientId),
+        Routes.applicationCommands(CLIENT_ID),
         { body: commands },
-    );
+    ) as Array<any>
 
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 } catch (error) {

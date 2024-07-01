@@ -34,7 +34,7 @@ DClient.on('ready', () => {
 DClient.on('interactionCreate', async (interaction) => {
 
     if (interaction.isChatInputCommand()) {
-        if (interaction.commandName === 'lights') {
+        if (interaction.commandName === 'light') {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'list') {
                 await listLightsCommand(interaction, RClient, LClient);
@@ -56,7 +56,7 @@ DClient.on('interactionCreate', async (interaction) => {
             await colorCommand(interaction, RClient, LClient);
         }
 
-        if (interaction.commandName === 'scenes') {
+        if (interaction.commandName === 'scene') {
             const subcommand = interaction.options.getSubcommand(true);
             if (subcommand === 'list') {
                  await listScenesCommand(interaction, RClient, LClient);

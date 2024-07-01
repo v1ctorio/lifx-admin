@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node --experimental-specifier-resolution=node dist/index.js",
-    "dev": "npm run build && npm run start"
+    "dev": "npm run build && npm run start",
+    "deploy": "tsc && node ./dist/util/slashCommandsDefinitions.js"
   },
   "type": "module"
 }
