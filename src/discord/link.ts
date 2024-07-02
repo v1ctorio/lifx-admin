@@ -99,14 +99,14 @@ export default async function link(commandI: ChatInputCommandInteraction, redis:
             return;
         }
         //TODO CREATE A CACHE OF LIGHTS AVIABLE ATM
-        modal.editReply({
+        modal.reply({
             content: "Token validated!",
             components: []
         });
         })
         .catch((error) => {
             console.error(error);
-            commandI.editReply({
+            commandI.reply({
                 content: "You took too long to paste the token. Please try again.",
                 components: []
             });
