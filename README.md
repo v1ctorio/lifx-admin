@@ -22,3 +22,7 @@ https://github.com/user-attachments/assets/9292878e-baf0-4e49-a854-dfc4c39f72a3
 
 ### Toggle light's power
 ![Toggle lights power](https://github.com/user-attachments/assets/55d23e60-8355-4694-8a5b-dc1a5e6be44c)
+
+### More screenshots 
+![image](https://github.com/user-attachments/assets/c9e82137-d9a3-4e46-94d0-886673c86e1e)
+![image](https://github.com/user-attachments/assets/70b069a3-2bdd-4655-80a4-031725d8ea28)
